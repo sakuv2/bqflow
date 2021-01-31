@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bq-flow"
-version = "0.1.0"
+version = "0.1.1"
 description = "BigQuery Workflow"
 authors = ["sakuv2 <loots2438@gmail.com>"]
 packages = [
