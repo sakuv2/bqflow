@@ -22,3 +22,6 @@ coverage.xml
 # dev notebook
 /notebooks
 note.ipynb
+
+# dist
+/dist
