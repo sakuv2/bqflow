@@ -3,6 +3,19 @@
 ## 概要
 yamlファイルにBigQuerySQLの実行順序を記述し、その順番にクエリを実行するコマンドラインツールです。
 
+## Install
+python ^3.9.0
+
+```bash
+pip install bq-flow
+```
+
+or
+
+```bash
+pipx install bq-flow
+```
+
 ## Usage
 
 ```
