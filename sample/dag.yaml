@@ -1,0 +1,54 @@
+
+entrypoint: diamond
+templates:
+- name: diamond
+  dag:
+    tasks:
+    - name: A
+      template: scalar
+      dependencies: []
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 1}
+    - name: D
+      template: scalar
+      dependencies: [B, C]
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 4}
+    - name: B
+      template: scalar
+      dependencies: [A]
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 2}
+    - name: C
+      template: step
+      dependencies: [A]
+    - name: E
+      template: scalar
+      dependencies: [C]
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 5}
+
+- name: step
+  dag:
+    tasks:
+    - name: step1
+      template: scalar
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 6}
+    - name: step2
+      template: scalar
+      dependencies: [step1]
+      arguments:
+        parameters:
+        - {name: scalar, type: INT64, value: 7}
+
+- name: scalar
+  script: sql/param_scalar.sql
+  inputs:
+    parameters:
+    - name: scalar

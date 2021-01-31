@@ -1,0 +1,89 @@
+
+entrypoint: all
+templates:
+- name: all
+  steps:
+  - - name: dag-to-dag
+      template: dag-to-dag
+    - name: dag-to-steps
+      template: dag-to-steps
+    - name: steps-to-steps
+      template: steps-to-steps
+    - name: steps-to-dag
+      template: steps-to-dag
+
+- name: dag-to-dag
+  dag:
+    tasks:
+    - name: X1
+      template: query
+    - name: X2
+      template: dag
+      dependencies: [X1]
+    - name: X3
+      template: query
+      dependencies: [X2]
+
+- name: dag-to-steps
+  dag:
+    tasks:
+    - name: X1
+      template: query
+    - name: X2
+      template: steps
+      dependencies: [X1]
+    - name: X3
+      template: query
+      dependencies: [X2]
+
+- name: steps-to-steps
+  steps:
+  - - name: Q1
+      template: query
+  - - name: Q2-1
+      template: steps
+    - name: Q2-2
+      template: query
+  - - name: Q3
+      template: query
+
+- name: steps-to-dag
+  steps:
+  - - name: Q1
+      template: query
+  - - name: Q2-1
+      template: dag
+    - name: Q2-2
+      template: query
+  - - name: Q3
+      template: query
+
+- name: dag
+  dag:
+    tasks:
+    - name: A
+      template: query
+    - name: B-1
+      template: query
+      dependencies: [A]
+    - name: B-2
+      template: query
+      dependencies: [A]
+    - name: C
+      template: query
+      dependencies: [B-1, B-2]
+
+- name: steps
+  steps:
+  - - name: S1
+      template: query
+  - - name: S2-1
+      template: query
+    - name: S2-2
+      template: query
+  - - name: S3
+      template: query
+
+- name: query
+  run: |
+    SELECT 1 AS x

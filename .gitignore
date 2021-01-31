@@ -1,0 +1,24 @@
+# cache
+*/__pycache__/*
+*.pyc
+.pytest_cache
+
+# poetry
+poetry.lock
+.venv
+*.egg-info
+pip-wheel-metadata
+
+# coverage
+.coverage
+coverage.xml
+
+# Env
+.env
+
+# Data
+/data
+
+# dev notebook
+/notebooks
+note.ipynb

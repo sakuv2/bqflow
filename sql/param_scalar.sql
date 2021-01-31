@@ -1,0 +1,1 @@
+SELECT @scalar AS scalar

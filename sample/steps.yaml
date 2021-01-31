@@ -1,0 +1,70 @@
+
+entrypoint: main
+templates:
+- name: main
+  steps:
+  - - name: step1-A
+      template: param_array
+      arguments:
+        parameters:
+        - name: arr
+          type: ARRAY<INT64>
+          value: [1, 2, 3]
+    - name: step1-B
+      template: param_array
+      arguments:
+        parameters:
+        - name: arr
+          type: ARRAY<STRUCT>
+          value: [
+            [
+              {name: id, type: INT64, value: 1},
+              {name: name, type: STRING, value: 太郎}
+            ],
+            [
+              {name: id, type: INT64, value: 2},
+              {name: name, type: STRING, value: 次郎}
+            ]
+          ]
+    - name: step1-C
+      template: nest_steps
+  - - name: step2
+      template: param_struct
+      arguments:
+        parameters:
+        - name: stc
+          type: STRUCT
+          value: [
+            {name: date, type: DATE, value: 2020-10-01},
+            {name: id, type: INT64, value: 1},
+            {name: description, type: STRING, value: hogefugapiyo},
+            {name: area, type: FLOAT64, value: 24.3},
+            {name: flg, type: BOOL, value: true},
+          ]
+        - name: num
+          type: INT64
+          value: 42
+
+- name: nest_steps
+  steps:
+  - - name: step1-C-1
+      template: simple
+  - - name: step1-C-2
+      template: simple
+
+- name: param_array
+  script: sql/param_array.sql
+  inputs:
+    parameters:
+    - name: arr
+
+- name: param_struct
+  script: sql/param_struct.sql
+  inputs:
+    parameters:
+    - name: stc
+    - name: num
+
+- name: simple
+  run: |
+    SELECT 1 AS num

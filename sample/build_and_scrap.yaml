@@ -1,0 +1,28 @@
+entrypoint: build
+templates:
+- name: build
+  steps:
+  - - name: create-A
+      template: A
+  - - name: create-B
+      template: B
+
+- name: scrap
+  steps:
+  - - name: drop
+      template: drop
+
+- name: A
+  run: |
+    CREATE OR REPLACE TABLE test.a AS
+    SELECT x
+    FROM UNNEST(GENERATE_ARRAY(1, 10)) AS x
+- name: B
+  run: |
+    CREATE OR REPLACE TABLE test.b AS
+    SELECT x * x AS square
+    FROM test.a
+- name: drop
+  run: |
+    DROP TABLE test.a;
+    DROP TABLE test.b;

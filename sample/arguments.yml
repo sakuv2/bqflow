@@ -1,0 +1,42 @@
+entrypoint: main
+arguments:
+  parameters:
+  - {name: scalar, type: INT64, value: 100}
+  - {name: stc, type: STRUCT, value: [
+      {name: name, type: STRING, value: 太郎},
+      {name: birth, type: ARRAY<INT64>, value: [1970, 1, 1]},
+      {name: inner_stc, type: STRUCT, value: [
+        {name: flg1, type: BOOL, value: true},
+        {name: flg2, type: BOOL, value: false},
+      ]},
+      {name: arr_stc, type: ARRAY<STRUCT>, value: [
+        [{name: subject, type: STRING, value: math}, {name: score, type: INT64, value: 48}],
+        [{name: subject, type: STRING, value: english}, {name: score, type: INT64, value: 60}],
+      ]}
+    ]}
+  - {name: num, type: INT64, value: 1}
+templates:
+- name: main
+  steps:
+  - - name: query1-1
+      template: query1
+    - name: query1-2
+      template: query1
+      arguments:
+        parameters:
+        - {name: scalar, type: STRING, value: AAA}
+  - - name: query2
+      template: query2
+
+- name: query1
+  run: SELECT @scalar AS scalar
+  inputs:
+    parameters:
+    - name: scalar
+
+- name: query2
+  run: SELECT @stc AS stc, @num AS num
+  inputs:
+    parameters:
+    - name: stc
+    - name: num
